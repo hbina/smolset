@@ -42,7 +42,7 @@ fn test_remove() {
     assert_eq!(s.len(), 1);
     assert!(!s.contains(&1));
     assert_eq!(s.insert(1), true);
-    let expected = vec![1, 2, 3];
+    let expected = vec![1, 2];
     assert_eq!(s.len(), expected.len());
     assert!(s
         .iter()
