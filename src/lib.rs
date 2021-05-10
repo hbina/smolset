@@ -420,6 +420,26 @@ where
     }
 }
 
+/// Implement into iterator for the SmolSet
+impl<A> IntoIterator for SmolSet<A>
+    where A: Array,
+          A::Item: PartialEq + Eq + Hash
+{
+    type Item = A::Item;
+    type IntoIter = SmolSetIntoIter<A>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        match self.inner {
+            InnerSmolSet::Stack(element) => SmolSetIntoIter {
+                inner: InnerSmolSetIntoIter::Stack(element.into_iter()),
+            },
+            InnerSmolSet::Heap(element) => SmolSetIntoIter {
+                inner: InnerSmolSetIntoIter::Heap(element.into_iter()),
+            },
+        }
+    }
+}
+
 /// Iterator returned upon calling `drain`.
 pub struct SmallDrain<T> {
     data: Vec<T>,
@@ -558,6 +578,16 @@ where
     }
 }
 
+/// Into Iterator of the set returned upon calling `into_iter`.
+/// This is required to be an abstraction over the enum.
+pub struct SmolSetIntoIter<A>
+    where A: Array,
+          A::Item: PartialEq + Eq + Hash
+{
+    inner: InnerSmolSetIntoIter<A>,
+}
+
+
 /// Iterator of the set returned upon calling `iter`.
 /// This is required to be an abstraction over the enum.
 pub struct SmolSetIter<'a, A: Array>
@@ -567,6 +597,15 @@ where
     inner: InnerSmolSetIter<'a, A>,
 }
 
+pub enum InnerSmolSetIntoIter<A>
+    where A: Array,
+          A::Item: PartialEq + Eq + Hash
+{
+    Stack(smallvec::IntoIter<A>),
+    Heap(std::collections::hash_set::IntoIter<A::Item>),
+}
+
+
 pub enum InnerSmolSetIter<'a, A: Array>
 where
     A::Item: PartialEq + Eq + Hash + 'a,
@@ -574,6 +613,22 @@ where
     Stack(std::slice::Iter<'a, A::Item>),
     Heap(std::collections::hash_set::Iter<'a, A::Item>),
 }
+
+
+impl<A> Iterator for SmolSetIntoIter<A>
+    where A: Array,
+          A::Item: PartialEq + Eq + Hash
+{
+    type Item = A::Item;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match &mut self.inner {
+            InnerSmolSetIntoIter::Stack(vec) => vec.next(),
+            InnerSmolSetIntoIter::Heap(hashset) => hashset.next(),
+        }
+    }
+}
+
 
 impl<'a, A: Array> Iterator for SmolSetIter<'a, A>
 where
