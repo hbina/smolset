@@ -80,6 +80,14 @@ fn test_from_iter() {
 }
 
 #[test]
+fn test_into_iter() {
+    let s: SmolSet<[usize; 4]> = vec![1, 2, 3, 4].into_iter().collect();
+    let vec: Vec<_> = s.into_iter().collect();
+    assert_eq!(vec.len(), 4)
+
+}
+
+#[test]
 fn test_replace() {
     struct RingOf7 {
         pub value: u32,
