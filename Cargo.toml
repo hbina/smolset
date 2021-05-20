@@ -1,6 +1,6 @@
 [package]
 name = "smolset"
-version = "1.1.0"
+version = "1.2.0"
 authors = ["Chris Fallin <cfallin@c1f.net>", "Hanif Bin Ariffin <hanif.ariffin.4326@gmail.com>"]
 description = """"
 An unordered set of elements optimized for small sizes.
