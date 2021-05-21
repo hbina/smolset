@@ -440,6 +440,19 @@ impl<A> IntoIterator for SmolSet<A>
     }
 }
 
+/// Implement into iterator for borrowed SmolSet
+impl<'a, A> IntoIterator for &'a SmolSet<A>
+    where A: Array,
+          A::Item: PartialEq + Eq + Hash
+{
+    type Item = &'a A::Item;
+    type IntoIter = SmolSetIter<'a, A>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.iter()
+    }
+}
+
 /// Iterator returned upon calling `drain`.
 pub struct SmallDrain<T> {
     data: Vec<T>,
