@@ -84,7 +84,16 @@ fn test_into_iter() {
     let s: SmolSet<[usize; 4]> = vec![1, 2, 3, 4].into_iter().collect();
     let vec: Vec<_> = s.into_iter().collect();
     assert_eq!(vec.len(), 4)
+}
 
+#[test]
+fn test_ref_into_iter() {
+    let first: SmolSet<[usize; 4]> = vec![1, 2, 3, 4].into_iter().collect();
+    let mut second = SmolSet::new();
+    for item in &first {
+        second.insert(*item);
+    }
+    assert_eq!(first, second);
 }
 
 #[test]
