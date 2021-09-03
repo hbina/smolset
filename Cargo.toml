@@ -10,4 +10,4 @@ repository = "https://github.com/hbina/smolset"
 license = "MIT"
 
 [dependencies]
-smallvec = "1.4.2"
+smallvec = "1.6.1"
