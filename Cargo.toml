@@ -1,6 +1,6 @@
 [package]
 name = "smolset"
-version = "1.3.1"
+version = "1.3.2-alpha"
 authors = ["Chris Fallin <cfallin@c1f.net>", "Hanif Bin Ariffin <hanif.ariffin.4326@gmail.com>"]
 description = """"
 An unordered set of elements optimized for small sizes.
@@ -8,6 +8,8 @@ This is a fork of the original library with overhauled internals, better fallbac
 """
 repository = "https://github.com/hbina/smolset"
 license = "MIT"
+
+publish = false
 
 [dependencies]
 smallvec = "1.6.1"

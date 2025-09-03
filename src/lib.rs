@@ -286,10 +286,11 @@ where
     /// Removes all elements in the set that does not satisfy the given predicate `f`.
     pub fn retain<F>(&mut self, f: F)
     where
-        F: FnMut(&mut A::Item) -> bool + for<'r> FnMut(&'r <A as smallvec::Array>::Item) -> bool,
+        F: FnMut(&A::Item) -> bool,
     {
+        let mut f = f;
         match &mut self.inner {
-            InnerSmolSet::Stack(ref mut elements) => elements.retain(f),
+            InnerSmolSet::Stack(ref mut elements) => elements.retain(move |element| f(element)),
             InnerSmolSet::Heap(ref mut elements) => elements.retain(f),
         }
     }

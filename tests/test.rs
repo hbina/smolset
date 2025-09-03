@@ -53,6 +53,29 @@ fn test_remove() {
 }
 
 #[test]
+fn test_retain() {
+    let mut s: SmolSet<[u32; 2]> = SmolSet::new();
+    assert_eq!(s.insert(1), true);
+    assert_eq!(s.insert(2), true);
+    assert_eq!(s.len(), 2);
+    assert!(s.contains(&1));
+    s.retain(|r| r != &1);
+    assert_eq!(s.len(), 1);
+    s.retain(|r| r != &1);
+    assert_eq!(s.len(), 1);
+    assert!(!s.contains(&1));
+    assert_eq!(s.insert(1), true);
+    let expected = vec![1, 2];
+    assert_eq!(s.len(), expected.len());
+    assert!(s
+        .iter()
+        .map(|r| *r)
+        .collect::<Vec<u32>>()
+        .iter()
+        .all(|x| expected.contains(x)));
+}
+
+#[test]
 fn test_clone() {
     let mut s: SmolSet<[u32; 2]> = SmolSet::new();
     s.insert(1);
