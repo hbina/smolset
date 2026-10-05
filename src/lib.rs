@@ -226,7 +226,7 @@ where
     pub fn get(&self, elem: &A::Item) -> Option<&A::Item> {
         match &self.inner {
             InnerSmolSet::Stack(elements) => elements.iter().find(|x| (elem).eq(&x)),
-            InnerSmolSet::Heap(elements) => elements.iter().find(|x| (elem).eq(&x)),
+            InnerSmolSet::Heap(hashset) => hashset.get(elem),
         }
     }
 
